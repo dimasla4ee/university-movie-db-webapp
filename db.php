@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/config.php';
+$config = require __DIR__ . '/config.php';
 
 $host = $config['db_host'];
 $user = $config['db_user'];
