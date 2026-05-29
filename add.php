@@ -13,11 +13,13 @@ if ($actors_result) {
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>Добавить фильм</title>
     <script src="script.js"></script>
 </head>
+
 <body>
     <h1>Добавление фильма</h1>
 
