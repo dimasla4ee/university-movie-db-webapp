@@ -1,7 +1,6 @@
 <?php
 require_once 'db.php';
 
-// Получаем список всех актёров для автодополнения
 $actors_list = [];
 $actors_result = $mysqli->query("SELECT id, full_name FROM persons ORDER BY full_name");
 if ($actors_result) {
@@ -17,63 +16,56 @@ if ($actors_result) {
 <head>
     <meta charset="UTF-8">
     <title>Добавить фильм</title>
-    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <h1>Добавление фильма</h1>
 
-    <p>
-        <a href="index.php">На главную</a>
-    </p>
-    <p>
-        <a href="list.php">Список фильмов</a>
-    </p>
+    <p><a href="index.php">На главную</a></p>
+    <p><a href="list.php">Список фильмов</a></p>
 
     <hr>
 
     <form method="post" action="save.php" id="movieForm">
-        <!-- Основная информация о фильме -->
         <fieldset>
             <legend>Информация о фильме</legend>
 
             <p>
-                <label><strong>Название фильма:</strong></label><br>
-                <input type="text" name="title" size="50" required>
+                <label>Название фильма:</label><br>
+                <input type="text" name="title" required>
             </p>
 
             <p>
-                <label><strong>Год выпуска:</strong></label><br>
+                <label>Год выпуска:</label><br>
                 <input type="number" name="release_year" min="1888" max="2026" required>
             </p>
 
             <p>
-                <label><strong>Синопсис (краткое содержание):</strong></label><br>
-                <textarea name="synopsis" cols="50" rows="5"></textarea>
+                <label>Синопсис:</label><br>
+                <textarea name="synopsis" rows="5"></textarea>
             </p>
 
             <p>
-                <label><strong>Бюджет (в долларах):</strong></label><br>
-                <input type="text" name="budget" placeholder="например: 25000000">
+                <label>Бюджет (в долларах):</label><br>
+                <input type="text" name="budget" placeholder="25000000">
             </p>
         </fieldset>
 
-        <!-- Блок для добавления актёров -->
         <fieldset>
             <legend>Актёры фильма</legend>
 
             <div id="actorsContainer">
-                <div class="row" data-type="actor" data-index="0">
-                    <input type="text" class="actor-input" name="actors[]" placeholder="Введите имя актёра"
-                        autocomplete="off" style="width: 300px;">
+                <div data-type="actor" data-index="0">
+                    <input type="text" class="actor-input" name="actors[]" placeholder="Введите имя актёра" autocomplete="off">
                     <button type="button" class="remove-btn" onclick="removeRow(this)" style="display: none;">✖</button>
                 </div>
             </div>
 
             <button type="button" class="add-btn" onclick="addRow('actor')">+ Добавить ещё актёра</button>
 
-            <div class="existing-select">
-                <label><strong>Или выберите из существующих:</strong></label><br>
-                <select id="existingActorSelect" style="width: 300px;">
+            <div>
+                <label>Или выберите из существующих:</label><br>
+                <select id="existingActorSelect">
                     <option value="">-- Выберите актёра --</option>
                     <?php foreach ($actors_list as $actor): ?>
                         <option value="<?php echo htmlspecialchars($actor['full_name']); ?>">
@@ -85,14 +77,12 @@ if ($actors_result) {
             </div>
         </fieldset>
 
-        <!-- Блок для добавления интересных фактов -->
         <fieldset>
             <legend>Интересные факты</legend>
 
             <div id="factsContainer">
-                <div class="row" data-type="fact" data-index="0">
-                    <input type="text" class="fact-input" name="fun_facts[]" placeholder="Введите интересный факт"
-                        style="width: 400px;">
+                <div data-type="fact" data-index="0">
+                    <input type="text" class="fact-input" name="fun_facts[]" placeholder="Введите интересный факт">
                     <button type="button" class="remove-btn" onclick="removeRow(this)" style="display: none;">✖</button>
                 </div>
             </div>
@@ -106,9 +96,7 @@ if ($actors_result) {
         </p>
     </form>
 
-    <script src="script.js"></script>
     <script>
-        // Передаём данные из PHP в JavaScript
         const actorSuggestions = <?php
             $suggestions = [];
             foreach ($actors_list as $actor) {
